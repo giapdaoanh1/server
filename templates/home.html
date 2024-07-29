@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6e8efb, #a777e3); /* Gradient hiện đại */
+            color: #fff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            z-index: 1000;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar h2 {
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+        .sidebar ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.3s, color 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .sidebar ul li a:hover {
+            background: #1abc9c;
+            color: #fff;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 20px);
+            overflow-y: auto;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            background: #f8f9fa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            position: relative;
+        }
+        .header .user-info {
+            text-align: left;
+        }
+        .header .user-info .username {
+            font-size: 26px;
+            font-weight: bold;
+            color: #333;
+        }
+        .header .user-info .balance {
+            font-size: 20px;
+            color: #1abc9c;
+        }
+        .header .logout {
+            font-size: 16px;
+            color: #e74c3c;
+            text-decoration: none;
+            transition: color 0.3s, background 0.3s;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        .header .logout:hover {
+            color: #c0392b;
+            background: rgba(255, 0, 0, 0.2);
+        }
+        .content, .notifications {
+            background: #ffffff;
+            color: #000;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease-in-out;
+        }
+        .content img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .content img:hover {
+            transform: scale(1.1);
+        }
+        .content h2, .notifications h2 {
+            color: #333;
+            margin: 0 0 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .content button {
+            background: #1abc9c;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .content button:hover {
+            background: #16a085;
+            transform: scale(1.03);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .footer a {
+            color: #1abc9c;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .footer a:hover {
+            color: #16a085;
+            text-decoration: underline;
+        }
+        .notifications ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+        .notifications ul li {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #333;
+            display: flex;
+            align-items: center;
+            position: relative;
+            font-size: 16px;
+            transition: background 0.3s, color 0.3s;
+        }
+        .notifications ul li::before {
+            content: '•';
+            font-size: 20px;
+            color: #3498db;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .notifications ul li a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .notifications ul li.alert {
+            color: #e74c3c;
+        }
+        .notifications ul li.info {
+            color: #3498db;
+        }
+        .notifications ul li.success {
+            color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>daoanh hotmail</h2>
+        <ul>
+            <li><a href="#" onclick="showNotifications()">Trang chủ</a></li>
+            <li><a href="#" onclick="showTopUp()">Nạp tiền</a></li>
+            <li><a href="#">unlock hotmail</a></li>
+            <li><a href="#">Task 4</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <div class="user-info">
+                <span class="username">{{ username }}</span>
+                <span class="balance" id="balance">Số dư của bạn còn: {{ balance }}</span>
+            </div>
+            <a href="/logout" class="logout">Logout</a>
+        </div>
+        <div class="notifications" id="notificationsContent">
+            <h2>Thông Báo</h2>
+            <ul id="notificationsList">
+                <li>Để sử dụng để unlock hotmail thì vui lòng nạp tiền vào tài khoản</li>
+                <li> Nếu tiền vào lâu thì vui lòng liên hệ admin qua: <a href="https://zalo.me/0565622060" target="_blank"> zalo</a></li>
+            </ul>
+        </div>
+        <div class="content" id="topUpContent">
+            <img src="/static/top-up-image.png" alt="Top-Up">
+            <h2>Nạp Tiền</h2>
+            <p><strong>Số tài khoản:</strong> 1234567890</p>
+            <p><strong>Chủ tài khoản:</strong> {{ username }}</p>
+            <p><strong>Nội dung chuyển khoản:</strong> {{ username }}</p>
+        </div>
+        <div class="footer">
+            <a href="#"><a href="https://zalo.me/0565622060" target="_blank">Nhóm zalo</a></a> | 
+            <a href="#"><a href="https://web.telegram.org/a/#7246897828" target="_blank">SP Telegram</a></a>
+        </div>
+    </div>
+
+    <script>
+        // Function to show the notifications
+        function showNotifications() {
+            document.getElementById('notificationsContent').style.display = 'flex';
+            document.getElementById('topUpContent').style.display = 'none';
+        }
+
+        // Function to show the top-up content
+        function showTopUp() {
+            document.getElementById('topUpContent').style.display = 'flex';
+            document.getElementById('notificationsContent').style.display = 'none';
+        }
+
+        // Function to update the balance and show a notification
+        function updateBalance(newBalance) {
+            // Update the balance text
+            document.getElementById('balance').textContent = `Số dư của bạn còn: ${newBalance}`;
+
+            // Create a new notification
+            const notification = document.createElement('li');
+            notification.className = 'success';
+            notification.textContent = `Tiền của bạn đã được nạp: ${newBalance}`;
+
+            // Add the notification to the list
+            const notificationsList = document.getElementById('notificationsList');
+            notificationsList.appendChild(notification);
+
+            // Show notifications content
+            showNotifications();
+        }
+
+        // Initialize by hiding the top-up content and showing notifications
+        document.getElementById('topUpContent').style.display = 'none';
+        document.getElementById('notificationsContent').style.display = 'flex';
+    </script>
+</body>
+</html>

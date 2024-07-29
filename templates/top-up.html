@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Up</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
+        }
+        .container {
+            background-color: #1c2833;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .container h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        .container img {
+            width: 100%;
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+        .container .info {
+            margin-bottom: 20px;
+        }
+        .container .info p {
+            font-size: 18px;
+            color: #ffffff;
+        }
+        .container .info span {
+            font-weight: 600;
+            color: #1abc9c;
+        }
+        .container .footer {
+            margin-top: 20px;
+        }
+        .container .footer a {
+            color: #1abc9c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .container .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Top Up</h2>
+        <img src="{{ image_url }}" alt="Top Up Image">
+        <div class="info">
+            <p>Account Number: <span>{{ account_number }}</span></p>
+            <p>Account Holder: <span>{{ username }}</span></p>
+            <p>Transfer Content: <span>Top up for {{ username }}</span></p>
+        </div>
+        <div class="footer">
+            <a href="/home">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

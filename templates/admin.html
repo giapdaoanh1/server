@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #c2e9fb, #ffdde1);
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-radius: 12px;
+            background: #f9f9f9;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .form-group:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #555;
+            flex: 1;
+        }
+        .form-group input,
+        .form-group select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            margin-left: 10px;
+            flex: 2;
+            font-size: 1rem;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        }
+        .form-group input[type="text"] {
+            background-color: #e9ecef;
+            color: #495057;
+            cursor: not-allowed;
+        }
+        .form-group input[type="number"] {
+            background-color: #ffffff;
+        }
+        .form-group select {
+            background-color: #ffffff;
+        }
+        .form-group button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-left: 10px;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .form-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-link a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .form-link a:hover {
+            text-decoration: underline;
+        }
+        .user-list {
+            max-height: 600px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .form-group label,
+            .form-group input,
+            .form-group select {
+                width: 100%;
+            }
+            .form-group button {
+                margin: 10px 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Panel</h2>
+        <form id="adminForm" action="/admin" method="post">
+            <div class="user-list">
+                {% for user in users %}
+                <div class="form-group">
+                    <input type="checkbox" name="username" value="{{ user }}">
+                    <label for="username">{{ user }}</label>
+                    <input type="text" name="current_balance_{{ user }}" value="{{ balances[user] if user in balances else '0' }}" readonly>
+                    <input type="text" id="amount_{{ user }}" name="amount_{{ user }}" placeholder="Số tiền" oninput="formatNumber(this)">
+                    <select name="operation_{{ user }}">
+                        <option value="add">Cộng</option>
+                        <option value="subtract">Trừ</option>
+                    </select>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <button type="submit" name="update">Cập nhật tiền</button>
+                <button type="submit" name="delete">Xoá user</button>
+            </div>
+        </form>
+        <div class="form-link">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+    <script>
+        function formatNumber(input) {
+            // Remove any non-digit characters except the dot
+            const value = input.value.replace(/[^0-9.]/g, '');
+            // Format the number with commas
+            const formattedValue = new Intl.NumberFormat().format(value);
+            // Set the formatted value back to the input field
+            input.value = formattedValue;
+        }
+    </script>
+</body>
+</html>
