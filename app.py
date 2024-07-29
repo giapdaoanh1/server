@@ -116,23 +116,20 @@ def admin():
             total_deposited = load_total_deposited()
             users_to_update = request.form.getlist('username')
             for user in users_to_update:
-                # Lấy số dư hiện tại
                 current_balance = float(balances.get(user, '0').replace(',', ''))
-                # Lấy số tiền nhập vào, loại bỏ dấu phân cách phần nghìn
                 amount_str = request.form.get(f'amount_{user}', '0').replace(',', '')
                 amount = float(amount_str)
-                # Lấy loại phép toán
                 operation = request.form.get(f'operation_{user}')
                 
                 if operation == 'add':
                     new_balance = current_balance + amount
                 elif operation == 'subtract':
-                    new_balance = max(current_balance - amount, 0)  # Đảm bảo số dư không âm
+                    new_balance = max(current_balance - amount, 0)
                 else:
                     new_balance = current_balance
                 
                 balances[user] = str(new_balance)
-                total_deposited[user] = total_deposited.get(user, '0')  # Preserve previous total deposited
+                total_deposited[user] = total_deposited.get(user, '0')
 
             save_balances(balances)
             save_total_deposited(total_deposited)
@@ -141,7 +138,6 @@ def admin():
     balances = load_balances()
     total_deposited = load_total_deposited()
     
-    # Chuyển đổi số dư và tổng số tiền đã gửi sang VND để hiển thị
     formatted_balances = {user: f"{float(balance):,.0f} VND" for user, balance in balances.items()}
     formatted_total_deposited = {user: f"{float(total_deposited.get(user, '0')):,.0f} VND" for user in users}
 
@@ -153,4 +149,4 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    app.run(host='171.254.85.139', port=80, debug=True)
+    app.run(debug=True)
